@@ -130,7 +130,7 @@ install_agtx() {
   archive="agtx-${version}-${arch}-linux.tar.gz"
   url="https://github.com/${AGTX_REPO}/releases/download/${version}/${archive}"
   tmp_dir="$(mktemp -d)"
-  trap 'rm -rf "${tmp_dir}"' RETURN
+  trap 'if [[ -n "${tmp_dir:-}" ]]; then rm -rf "${tmp_dir}"; fi' RETURN
 
   log "Installing agtx ${version} (${arch}/linux) from ${url}"
   curl -fsSL "${url}" -o "${tmp_dir}/${archive}"
