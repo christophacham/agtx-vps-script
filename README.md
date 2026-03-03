@@ -28,11 +28,54 @@ That one setup command installs and configures:
 ## Run AGTX
 
 ```bash
+# Interactive menu (just run with no args):
+agtx-session
+
+# Or use commands directly:
 agtx-session start --project-dir /srv/your-project
-# detach (keep running): Ctrl+b then d
-agtx-session attach
 agtx-session status
+agtx-session logs
+agtx-session attach
 ```
+
+### Survives SSH disconnects
+
+The session runs on a dedicated tmux server (`agtx-ui`) with `destroy-unattached off`.
+Close your SSH connection, go away, come back — agtx keeps running.
+
+```bash
+agtx-session start --project-dir ~/my-project
+# detach: Ctrl+b then d
+# close SSH, come back later...
+agtx-session attach   # pick up where you left off
+```
+
+### Auto-respawn
+
+If agtx crashes or exits, the session automatically restarts it after 3 seconds.
+Disable with `--no-respawn`.
+
+### Commands
+
+| Command   | Description                              |
+|-----------|------------------------------------------|
+| `start`   | Start agtx in a persistent tmux session  |
+| `attach`  | Attach to a running session              |
+| `restart` | Restart the session                      |
+| `stop`    | Stop the session                         |
+| `status`  | Show session status and uptime           |
+| `logs`    | Show last 100 lines of session output    |
+| `help`    | Show help                                |
+
+### Options
+
+| Option              | Description                                |
+|---------------------|--------------------------------------------|
+| `--project-dir`     | Project directory (default: `$HOME`)       |
+| `--no-attach`       | Start without auto-attaching               |
+| `--no-respawn`      | Don't auto-restart agtx if it exits        |
+| `--session <name>`  | tmux session name (default: `agtx-main`)   |
+| `--server <name>`   | tmux server name (default: `agtx-ui`)      |
 
 ## GSD workflow in AGTX
 
